@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load myTags %}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+     <div class="page-title-box d-flex align-items-center justify-content-between">
+      <h4 class="mb-0">
+       المسودة
+      </h4>
+      <div class="page-title-right">
+       <ol class="breadcrumb m-0">
+        <li class="breadcrumb-item">
+         <a href="javascript: void(0);">
+          المكاتبات
+         </a>
+        </li>
+        <li class="breadcrumb-item active">
+         مسودة المكاتبات
+        </li>
+       </ol>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title mt-2 mb-3 text-center" style="font-size: 45px;font-weight: 600;">
+                    البحث في المسودة
+                </h4>
+                <form method="GET">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">
+                                رقم الوارد :
+                            </label>
+                            <input class="form-control" type="text" name="registration_num" placeholder="رقم الوارد..." value="{{request.GET.registration_num}}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">
+                            تاريخ الورود :
+                        </label>
+                        <input class="form-control" type="text" name="document_id" placeholder="رقم الأرشيف" value="{{request.GET.document_id}}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">
+                            رقم القيد :
+                        </label>
+                        <input class="form-control" type="text" name="document_num" placeholder="رقم القيد" value="{{request.GET.document_num}}">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">
+                                جهة الورود :
+                            </label>
+                            <select class="form-select select2" name="incoming_unit">
+                                <option value="">
+                                    لا يوجد
+                                </option>
+                                {% for unit in units %}
+                                <option value="{{unit.id}}" {% if unit.id|into_str == request.GET.incomig_unit %}selected{% endif %}>
+                                    {{unit.unit_name}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">
+                                عنوان المكاتبة :
+                            </label>
+                            <input class="form-control" type="text" name="doc_summary" placeholder="عنوان المكاتبة" value="{{request.GET.doc_summary}}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">
+                            عنوان المكاتبة :
+                        </label>
+                        <input class="form-control" type="text" name="doc_state" placeholder="موقف المكاتبة" value="{{request.GET.doc_state}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">بحث</button>
+                    </div>
+                </div>
+            </form>
+
+            </div>
+        </div>
+        <!-- end card -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+             <h4 class="card-title">
+              بيانات المكاتبات
+             </h4>
+     <div class="table-responsive mb-4">
+      <table class="table table-centered datatable dt-responsive nowrap table-card-list table-striped" style="border-collapse: collapse; border-spacing: 0 12px; width: 100%;">
+       <thead>
+        <tr class="bg-transparent">
+         <th class="fw-bold">
+          رقم الصادر
+         </th>
+         <th class="fw-bold">
+          توقيت انشاء المكاتبة
+         </th>
+         <th class="fw-bold">
+          صادر إلى
+         </th>
+         <th class="fw-bold">
+          عنوان المكاتبة
+         </th>
+         <th class="fw-bold">
+          الموضوع
+         </th>
+         <th class="fw-bold">
+          بواسطة
+         </th>
+         <th class="fw-bold" style="width: 120px;">
+          خيارات
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        {% for document in documents %}
+        <tr>
+         <td>
+            {{document.registration_num|convert_to_arabic_numerals}}
+         </td>
+         <td>
+            {{document.doc_datetime|date:'Y/m/d H:i'|convert_to_arabic_numerals}}
+         </td>
+         <td>
+            ادارة المشاة
+           </td>
+         <td>
+            {{document.doc_title|convert_to_arabic_numerals}}
+         </td>
+         <td>
+            لا يوجد
+         </td>
+         <td>
+            رقيب / رمضان حماد
+         </td>
+         <td style="width: 200px;">
+            <ul class="list-inline mb-0">
+                <li class="list-inline-item">
+                    <a class="text-primary"
+                        href="{% url 'documents:preview_document' document.id %}" >
+                        <i class="uil-eye font-size-18">
+                        </i>
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a class="text-success"
+                        href="">
+                        <i class="uil uil-pen font-size-18">
+                        </i>
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a class="text-danger"
+                        href="javascript:delete_item({{term.plan_det_code}})">
+                        <i class="uil uil-trash-alt font-size-18">
+                        </i>
+                    </a>
+                </li>
+            </ul>
+        </td>
+        </tr>
+        {% endfor %}
+       </tbody>
+      </table>
+     </div>
+     <div class="row mt-4">
+        <div class="col-sm-6">
+        </div>
+        <div class="col-sm-6">
+            <div class="float-sm-end">
+                <ul class="pagination pagination-rounded justify-content-center mt-4">
+                    <li class="page-item {% if current_page|into_int == 1|into_int %}disabled{% endif %}">
+                        <a class="page-link"
+                            href="{% if '?search' in  request.get_full_path%}?search={{request.GET.search}}&page={{current_page|sub:1}}{% else %}?page={{current_page|sub:1}}{% endif %}">
+                            <i class="mdi mdi-chevron-right">
+                            </i>
+                        </a>
+                    </li>
+                    {% for x in current_page|my_pages:pages %}
+                    <li class="page-item {% if  x|into_str == current_page|into_str %}active{% endif %}">
+                        <a class="page-link"
+                            href="{% if '?search' in  request.get_full_path%}?search={{request.GET.search}}&page={{x}}{% else %}?page={{x}}{% endif %}">
+                            {{x}}
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <li class="page-item {% if current_page|add:1 > pages|into_int %}disabled{% endif %}">
+                        <a class="page-link"
+                            href="{% if '?search' in  request.get_full_path%}?search={{request.GET.search}}&page={{current_page|add:1}}{% else %}?page={{current_page|add:1}}{% endif %}">
+                            <i class="mdi mdi-chevron-left">
+                            </i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+     </div>
+     </div>
+     </div>
+    </div>
+{% endblock %}

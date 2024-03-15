@@ -1,0 +1,456 @@
+{% load myTags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{title}}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <!-- App favicon -->
+    <link href="{% static 'images/MID logo.png' %}" rel="shortcut icon" />
+    <!-- Bootstrap Css -->
+    <link
+      href="{% static 'css/bootstrap.min.css' %}"
+      id="bootstrap-style"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Icons Css -->
+    <link
+      href="{% static 'css/icons.min.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{% static 'css/unicons.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- libs Css -->
+    <link
+      href="{% static 'libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{% static 'libs/select2/css/select2.min.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{% static 'libs/sweetalert2/sweetalert2.min.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{% static 'libs/toastr/toastr.min.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- App Css-->
+    <link
+      href="{% static 'css/app.min.css' %}"
+      id="app-style"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Main Css-->
+    <link
+      href="{% static 'css/main.css' %}"
+      id="app-style"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+    href="{% static 'libs/dynamic-tree-editor/css/treeeditor.css' %}"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <style>
+@font-face {
+        font-family: "Cairo-Bold";
+        font-style: normal;
+        font-weight: 200;
+        font-display: swap;
+        src: local("Cairo"),
+          url("{% static 'fonts/Cairo-Bold.ttf' %}") format("woff2");
+        unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41,
+          U+FB50-FDFF, U+FE80-FEFC;
+      }
+      main,nav,footer,body {
+        font-family: "Cairo-Bold", sans-serif !important;
+      }
+  </style>
+  </head>
+
+  <body data-sidebar="dark" id="page-body">
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+      <header id="page-topbar">
+        <div class="navbar-header">
+          <div class="d-flex">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+              <a class="logo logo-light" href="#" style="margin-right: -10px">
+                <span class="logo-sm">
+                  <img
+                    alt=""
+                    height="40"
+                    src="{% static 'images/MID logo.png' %}"
+                  />
+                </span>
+                <span class="logo-lg">
+                  <span class="logo-lg party_name">
+                    <p>{{user.def_off_name}}</p>
+                  </span>
+                </span>
+              </a>
+            </div>
+            <button
+              class="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn"
+              type="button"
+              id="bar-expand-btn"
+            >
+              <i class="fa fa-fw fa-bars"> </i>
+            </button>
+          </div>
+          <div class="d-flex">
+            <div class="dropdown d-inline-block">
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="btn header-item noti-icon waves-effect"
+                data-bs-toggle="dropdown"
+                id="page-header-notifications-dropdown"
+                type="button"
+              >
+                <i class="dripicons-bell"> </i>
+                <span class="badge bg-danger rounded-pill notifications-count">
+                  0
+                </span>
+              </button>
+              <div
+                aria-labelledby="page-header-notifications-dropdown"
+                class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+              >
+                <div class="p-3">
+                  <div class="row align-items-center">
+                    <div class="col">
+                      <h5 class="m-0 font-size-16">الإشعارات</h5>
+                    </div>
+                  </div>
+                </div>
+                <div data-simplebar="init" style="max-height: 230px">
+                  <div class="simplebar-wrapper" style="margin: 0px">
+                    <div class="simplebar-height-auto-observer-wrapper">
+                      <div class="simplebar-height-auto-observer"></div>
+                    </div>
+                    <div class="simplebar-mask">
+                      <div
+                        class="simplebar-offset"
+                        style="right: 0px; bottom: 0px"
+                      >
+                        <div
+                          class="simplebar-content-wrapper"
+                          style="height: auto; overflow: hidden"
+                        >
+                          <div class="simplebar-content notifications-container" style="padding: 0px">
+                            {% for user_notification in user_notifications %}
+                            <a class="text-reset notification-item" id = "{{user_notification.notification.id}}" >
+                                <div class="d-flex align-items-start notification-body">
+                                  <div class="flex-shrink-0 me-3">
+                                    <div class="avatar-xs">
+                                      <span
+                                        class="avatar-title {% if user_notification.state == '1' %} bg-danger {% else %} bg-success {% endif %} rounded-circle font-size-16"
+                                      >
+                                        <i class="{% if user_notification.state == '1' %} uil-square {% else %} uil-check-square {% endif %}"> </i>
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-bold"> {{user_notification.notification.notifi_title|convert_to_arabic_numerals}} </h6>
+                                    <div class="font-size-12 text-muted">
+                                      <p class="mb-1">
+                                        {{user_notification.notification.notifi_text|convert_to_arabic_numerals}}
+                                      </p>
+                                      <p class="mb-0">
+                                        <i class="mdi mdi-clock-outline"> </i>
+                                        التوقيت {{user_notification.notification.notifi_datetime|date:'H:i'|convert_to_arabic_numerals}}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </a>
+                              <hr>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="simplebar-placeholder"
+                      style="width: 0px; height: 0px"
+                    ></div>
+                  </div>
+                  <div
+                    class="simplebar-track simplebar-horizontal"
+                    style="visibility: hidden"
+                  >
+                    <div
+                      class="simplebar-scrollbar"
+                      style="
+                        transform: translate3d(0px, 0px, 0px);
+                        display: none;
+                      "
+                    ></div>
+                  </div>
+                  <div
+                    class="simplebar-track simplebar-vertical"
+                    style="visibility: hidden"
+                  >
+                    <div
+                      class="simplebar-scrollbar"
+                      style="
+                        transform: translate3d(0px, 0px, 0px);
+                        display: none;
+                        height: 147px;
+                      "
+                    ></div>
+                  </div>
+                </div>
+                <div class="p-2 border-top">
+                  <div class="d-grid">
+                    <a
+                      class="btn btn-sm btn-link font-size-14 text-center"
+                      href=""
+                    >
+                      <i class="uil-arrow-circle-right me-1"> </i>
+                      عرض الكل
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown d-none d-lg-inline-block ms-1">
+              <button
+                class="btn header-item noti-icon waves-effect"
+                data-bs-toggle="fullscreen"
+                type="button"
+              >
+                <i class="uil-minus-path"> </i>
+              </button>
+            </div>
+            <div class="dropdown d-inline-block">
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="btn header-item waves-effect"
+                data-bs-toggle="dropdown"
+                id="page-header-user-dropdown"
+                type="button"
+              >
+                <img
+                  alt="Header Avatar"
+                  class="rounded-circle header-profile-user"
+                  src="{% static 'images/users/avatar.png' %}"
+                />
+                <span
+                  class="d-none d-xl-inline-block ms-1 fw-medium font-size-15"
+                >
+                  <!-- {{user.name}} -->
+                  رقيب أول / رمضان حماد
+                </span>
+                <i class="uil-angle-down d-none d-xl-inline-block font-size-15">
+                </i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end">
+                <!-- item-->
+                {% comment %}
+                <a class="dropdown-item" href="#">
+                  <i
+                    class="uil uil-user-circle font-size-18 align-middle text-muted me-1"
+                  >
+                  </i>
+                  <span class="align-middle"> الملف الشخصي </span>
+                </a>
+                {% endcomment %}
+                <a class="dropdown-item" href="">
+                  <i
+                    class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted"
+                  >
+                  </i>
+                  <span class="align-middle"> تسجيل الخروج </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- ========== Left Sidebar Start ========== -->
+      <div class="vertical-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box" style="margin-right: -18px">
+          <span class="logo logo-light" href="#">
+            <span class="logo-sm" style="margin-right: 8px">
+              <img
+                alt=""
+                height="40"
+                src="{% static 'images/MID logo.png' %}"
+              />
+            </span>
+            <span class="logo-lg party_name" id="side-logo">
+              <p>اختبار الارشيف</p>
+            </span>
+          </span>
+        </div>
+        <button
+          class="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn"
+          type="button"
+          id="bar-collaps-btn"
+        >
+          <i class="fa fa-fw fa-bars"> </i>
+        </button>
+        <div class="sidebar-menu-scroll" data-simplebar="">
+          <!--- Sidemenu -->
+          <div id="sidebar-menu">
+            <!-- Left Menu Start -->
+            <ul class="metismenu list-unstyled" id="side-menu">
+              <li class="menu-title">الرئيسية</li>
+              <li>
+                <a href="{% url 'accounts:home' %}">
+                  <i class="uil-home-alt"> </i>
+                  <span>الصفحة الرئيسية</span>
+                </a>
+              </li>
+              <li class="menu-title">المكاتبات</li>
+              <li>
+                <a href="{% url 'documents:add_incoming_doc' %}">
+                  <i class="uil-envelope-download-alt"> </i>
+                  <span>إضافة مكاتبة واردة</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'documents:incoming_documents' %}">
+                  <i class="uil-envelope-download"> </i>
+                  <span class="badge rounded-pill bg-danger float-end">
+                    1
+                   </span>
+                  <span>وارد الوحدة</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'documents:add_outgoing_doc' %}">
+                  <i class="uil-envelope-upload-alt"> </i>
+                  <span>إضافة مكاتبة صادرة</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'documents:outgoing_documents' %}">
+                  <i class="uil-envelope-upload"> </i>
+                  <span>صادر الوحدة</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'documents:draft_documents' %}">
+                  <i class="uil-edit"> </i>
+                  <span>المسودة</span>
+                </a>
+              </li>
+              {% if request.user|is_group_admin %}
+              <li class="menu-title">الوحدة</li>
+              <li>
+                <a href="{% url 'accounts:unit_subjects' %}">
+                  <i class="uil-subject"> </i>
+                  <span> الموضوعات </span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'accounts:users' %}">
+                  <i class="uil-users-alt"> </i>
+                  <span> أفراد الوحدة </span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'accounts:home' %}">
+                  <i class="uil-game-structure"> </i>
+                  <span> هيكل الوحدة التنظيمي </span>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+          <!-- Sidebar -->
+        </div>
+      </div>
+      <!-- Left Sidebar End -->
+      <!-- ============================================================== -->
+      <!-- Start right Content here -->
+      <!-- ============================================================== -->
+      <div class="main-content">
+        <div class="page-content">
+          <div class="container-fluid">
+            {% block content %} {% endblock content %}
+          </div>
+          <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+        <footer class="footer">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-6" id="datetime" style="margin-top: -10px">
+                <div
+                  class="text-sm-end d-none d-sm-block"
+                  id-="ffdate"
+                  dir="rtl"
+                >
+                  <script>
+                    asd = document.getElementById("ffdate");
+                    asd.innerHtml = write(new Date());
+                  </script>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="text-sm-end d-none d-sm-block" dir="ltr">
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  © ISB.
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+      <!-- end main content-->
+    </div>
+    <!-- END layout-wrapper -->
+
+    <!-- JAVASCRIPT -->
+    <script src="{% static 'libs/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'libs/metismenu/metisMenu.min.js' %}"></script>
+    <script src="{% static 'libs/simplebar/simplebar.min.js' %}"></script>
+    <script src="{% static 'libs/node-waves/waves.min.js' %}"></script>
+    <script src="{% static 'libs/waypoints/lib/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'libs/jquery.counterup/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'libs/fitty/fitty.min.js' %}"></script>
+    <script src="{% static 'libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'libs/select2/js/select2.min.js' %}"></script>
+    <script src="{% static 'libs/sweetalert2/sweetalert2.min.js' %}"></script>
+    <script src="{% static 'libs/underscore/underscore-min.js' %}"></script>
+    <script src="{% static 'libs/reconnecting-websocket/reconnecting-websocket.min.js' %}"></script>
+    <script src="{% static 'libs/toastr/toastr.min.js' %}"></script>
+    <script src="{% static 'libs/jquery-validate/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'libs/parsleyjs/parsley.min.js' %}"></script>
+    <script src="{% static 'libs/dynamic-tree-editor/js/dinamp.treeeditor.js' %}"></script>
+    <script src="{% static 'js/form-advanced.init.js' %}"></script>
+    <!-- App js -->
+    <script src="{% static 'js/app.js' %}"></script>
+    <!-- Main js -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block javascript %} {% endblock javascript %}
+    <script>
+  </script>
+
+  </body>
+</html>

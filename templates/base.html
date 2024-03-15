@@ -1,0 +1,320 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{title}}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <!-- App favicon -->
+    <link href="{% static 'images/MID logo.png' %}" rel="shortcut icon" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Bootstrap Css -->
+   
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Add these to your HTML file before Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-oP7NZXqLADdWNkJ1MW5v8dMp5lf2fdCGwpczzy8Y3z12aO1jEItYzkwHjpJQDdd5" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js" integrity="sha384-56mEYJoFMyO5Nl47EdF9ozE9zR8g1C3DRueC83N6qUifhR/iihxlMTt8ITWX4UQy" crossorigin="anonymous"></script>
+
+    <link
+      href="{% static 'css/bootstrap.min.css' %}"
+      id="bootstrap-style"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Icons Css -->
+    <link
+      href="{% static 'css/icons.min.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{% static 'css/unicons.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- libs Css -->
+    <link
+      href="{% static 'libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{% static 'libs/select2/css/select2.min.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{% static 'libs/sweetalert2/sweetalert2.min.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="{% static 'libs/toastr/toastr.min.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- App Css-->
+    <link
+      href="{% static 'css/app.min.css' %}"
+      id="app-style"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Main Css-->
+    <link
+      href="{% static 'css/main.css' %}"
+      id="app-style"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+    href="{% static 'libs/dynamic-tree-editor/css/treeeditor.css' %}"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <style>
+@font-face {
+        font-family: "Cairo-Bold";
+        font-style: normal;
+        font-weight: 200;
+        font-display: swap;
+        src: local("Cairo"),
+          url("{% static 'fonts/Cairo-Bold.ttf' %}") format("woff2");
+        unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41,
+          U+FB50-FDFF, U+FE80-FEFC;
+      }
+      main,nav,footer,body {
+        font-family: "Cairo-Bold", sans-serif !important;
+      }
+  </style>
+  </head>
+
+  <body data-sidebar="dark" id="page-body">
+    <!-- Begin page -->
+   
+    <div id="layout-wrapper" >
+      <header id="page-topbar" style="background-color: #ffffff"
+      
+      >
+        <div class="navbar-header">
+          <div class="d-flex">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+              <a class="logo logo-light" href="#" style="margin-right: -10px">
+                <span class="logo-sm">
+                  <img
+                    alt=""
+                    height="40"
+                    
+                  />
+                </span>
+                <span class="logo-lg">
+                  <span class="logo-lg party_name">
+                    <p>{{user.def_off_name}}</p>
+                  </span>
+                </span>
+              </a>
+            </div>
+            <button
+              class="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn"
+              type="button"
+              id="bar-expand-btn"
+            >
+              <i class="fa fa-fw fa-bars"> </i>
+            </button>
+          </div>
+          <div class="d-flex">
+            <div class="dropdown d-inline-block">
+              <button
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="btn header-item waves-effect"
+                  data-bs-toggle="dropdown"
+                  id="page-header-user-dropdown"
+                  type="button"
+              >
+                  <img
+                      alt="Header Avatar"
+                      class="rounded-circle header-profile-user"
+                      src="{% static 'images/users/avatar1.png' %}"
+                  />
+                  <span
+                      class="d-none d-xl-inline-block ms-1 fw-medium font-size-15"
+                  >
+                      <!-- {{user.name}} -->
+                  </span>
+                  <i class="uil-angle-down d-none d-xl-inline-block font-size-15">
+                  </i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end">
+                  <!-- ... (existing code) ... -->
+          
+                  <!-- Add a separator -->
+                  <div class="dropdown-divider"></div>
+          
+                  <!-- Add a logout link -->
+                  <a class="dropdown-item" href="{% url 'accounts:logout' %}">
+                      <i
+                          class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted"
+                      >
+                      </i>
+                      <span class="align-middle"> تسجيل الخروج </span>
+                  </a>
+              </div>
+          </div>
+      </header>
+      <!-- ========== Left Sidebar Start ========== -->
+   
+      {% if user.is_authenticated %}
+      <div class="vertical-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box" style="margin-right: -18px">
+          <span class="logo logo-light" >
+            <span class="logo-sm" style="margin-right: 8px">
+              <img
+                alt=""
+                height="40"
+                src="{% static 'images/maxab.png' %}"
+                
+              />
+            </span>
+            <span class="logo-lg party_name" id="side-logo">
+              <img
+              alt=""
+              height="80"
+              src="{% static 'images/Maxab-New-Logo04.png' %}"
+             
+            />
+            </span>
+          </span>
+        </div>
+        
+        <button
+          class="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn"
+          type="button"
+          id="bar-collaps-btn"
+        >
+          <i class="fa fa-fw fa-bars"> </i>
+        </button>
+       
+        <div class="sidebar-menu-scroll" data-simplebar="">
+          
+          <!--- Sidemenu -->
+          
+          <div id="sidebar-menu">
+            <!-- Left Menu Start -->
+            <ul class="metismenu list-unstyled" id="side-menu">
+              <li class="menu-title">الرئيسية</li>
+
+
+              <li>
+                <a href="{%url 'accounts:search_attendance'%}">
+                  <i class="uil-search"> </i>
+                  <span> محرك البحث</span>
+                </a>
+              </li>
+
+
+              <li>
+                <a href="{%url 'website:index'%}">
+                  <i class="uil-eye"> </i>
+                  <span> بث تعريف الوجوه </span>
+                </a>
+              </li>
+            
+
+            
+              <li class="menu-collapsible">
+                <a data-toggle="collapse" href="#addItems">
+                  <i class="uil-user"></i>
+                  <span>عمال</span>
+                </a>
+                <ul class="collapse" id="addItems">
+                  <li>
+                    <a href="{% url 'accounts:add_face' %}">
+                      <i class="uil-user"></i>
+                      <span>اضافة عامل</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'accounts:add_image' %}">
+                      <i class="uil-image"></i>
+                      <span>اضافة صورة</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            
+
+              
+
+
+
+
+
+                {% comment %} <a href="">
+                  <i class="uil-edit"> </i>
+                  <span> استعلام</span>
+                </a> {% endcomment %}
+              
+
+            </ul>
+          </div>
+          <!-- Sidebar -->
+        </div>
+      </div>
+      {% endif %} 
+      <!-- Left Sidebar End -->
+      <!-- ============================================================== -->
+      <!-- Start right Content here -->
+      <!-- ============================================================== -->
+      <div class="main-content">
+        <div class="page-content">
+          <div class="container-fluid">
+            {% block content %} {% endblock content %}
+          </div>
+          <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+        <!-- <footer class="footer">
+       
+        </footer> -->
+      </div>
+      <!-- end main content-->
+    </div>
+      <!-- END layout-wrapper -->
+
+    <!-- JAVASCRIPT -->
+    <script src="{% static 'libs/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'libs/metismenu/metisMenu.min.js' %}"></script>
+    <script src="{% static 'libs/simplebar/simplebar.min.js' %}"></script>
+    <script src="{% static 'libs/node-waves/waves.min.js' %}"></script>
+    <script src="{% static 'libs/waypoints/lib/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'libs/jquery.counterup/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'libs/fitty/fitty.min.js' %}"></script>
+    <script src="{% static 'libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'libs/select2/js/select2.min.js' %}"></script>
+    <script src="{% static 'libs/sweetalert2/sweetalert2.min.js' %}"></script>
+    <script src="{% static 'libs/underscore/underscore-min.js' %}"></script>
+    <script src="{% static 'libs/reconnecting-websocket/reconnecting-websocket.min.js' %}"></script>
+    <script src="{% static 'libs/toastr/toastr.min.js' %}"></script>
+    <script src="{% static 'libs/jquery-validate/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'libs/parsleyjs/parsley.min.js' %}"></script>
+    <script src="{% static 'libs/dynamic-tree-editor/js/dinamp.treeeditor.js' %}"></script>
+    <script src="{% static 'js/form-advanced.init.js' %}"></script>
+    <!-- App js -->
+    <script src="{% static 'js/app.js' %}"></script>
+    <!-- Main js -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block javascript %} {% endblock javascript %}
+    <script>
+  </script>
+
+  </body>
+</html>

@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+     <div class="page-title-box d-flex align-items-center justify-content-between">
+      <h4 class="mb-0">
+       إضافة مكاتبة واردة
+      </h4>
+      <div class="page-title-right">
+       <ol class="breadcrumb m-0">
+        <li class="breadcrumb-item">
+         <a href="javascript: void(0);">
+          المكاتبات
+         </a>
+        </li>
+        <li class="breadcrumb-item active">
+         إضافة مكاتبة واردة
+        </li>
+       </ol>
+      </div>
+     </div>
+    </div>
+   </div>
+
+   <div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+         <div class="card-body">
+          <h4 class="card-title">
+           بيانات المكاتبة
+          </h4>
+          <form class="needs-validation" novalidate="" name="incoming_doc_form" id = "incoming_doc_form" >
+            {% csrf_token %}
+            <div class="row">
+            <div class="col-md-6">
+             <div class="mb-3">
+              <label class="form-label" for="confidentiality_level">
+               درجة السرية
+              </label>
+              <select class = 'form-select' name="confidentiality_level" id="confidentiality_level">
+                <option value="1">
+                    سري
+                </option>
+                <option value="2">
+                    سري جدا
+                </option>
+                <option value="2">
+                    سري للغاية
+                </option>
+              </select>
+             </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                 <label class="form-label" for="priority_level">
+                  درجة الأهمية
+                 </label>
+                 <select class = 'form-select' name="priority_level" id="priority_level">
+                   <option value="1">
+                       عاجل
+                   </option>
+                   <option value="2">
+                       عاجل جدا
+                   </option>
+                   <option value="2">
+                       عاجل للغاية
+                   </option>
+                 </select>
+                </div>
+               </div>
+           </div>
+           <div class="row">
+            <div class="col-md-3">
+             <div class="mb-3">
+              <label class="form-label" for="doc_num">
+               رقم القيد
+              </label>
+              <input class="form-control" id="doc_num" name="doc_num" required="" type="number" min="0">
+              <div class="invalid-feedback">
+               يجب إدخال رقم القيد
+              </div>
+             </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                 <label class="form-label" for="doc_datetime">
+                  توقيت القيد
+                 </label>
+                 <input class="form-control" id="doc_datetime" name = "doc_datetime" disabled type="text" value = '{{current_time}}'>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                 <label class="form-label" for="registration_num">
+                  رقم الورود
+                 </label>
+                 <input class="form-control" id="registration_num" name="registration_num" required="" type="number" min = "0">
+                 <div class="invalid-feedback">
+                  يجب إدخال رقم الورود
+                 </div>
+                </div>
+               </div>
+               <div class="col-md-3">
+                   <div class="mb-3">
+                    <label class="form-label" for="registration_datetime">
+                     تاريخ الورود
+                    </label>
+                    <div class="input-group" id="registration_datetime">
+                        <input class="form-control" data-date-container="#registration_datetime" name = "doc_date" data-date-format="yyyy/mm/dd" data-provide="datepicker" value = '{{current_date}}' type="text"/>
+                        <span class="input-group-text">
+                         <i class="mdi mdi-calendar">
+                         </i>
+                        </span>
+                       </div>
+                    <div class="invalid-feedback">
+                     يجب إدخال تاريخ الورود
+                    </div>
+                   </div>
+               </div>
+           </div>
+           <div class="col-md-12">
+            <div class="mb-3">
+             <label class="form-label" for="doc_summary">
+              ملخص الموضوع
+             </label>
+             <textarea class="form-control" name="doc_summary" id="doc_summary" cols="2" rows="2"></textarea>
+             <div class="invalid-feedback">
+              يجب إدخال تاريخ الورود
+             </div>
+            </div>
+        </div>
+           <div class="row">
+            <div class="col-md-4">
+                <div class="mb-3">
+                 <label class="form-label" for="incoming_unit">
+                   جهة الورود
+                 </label>
+                 <select class = 'form-select select2' name="incoming_unit" id="incoming_unit">
+                   <option value="1">
+                       إدارة المشاة
+                   </option>
+                   <option value="2">
+                       إدارة المدرعات
+                   </option>
+                   <option value="2">
+                       إدارة الدفاع الجوي
+                   </option>
+                 </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="document_file" class="form-label">ملف المكاتبة (صورة المكاتبة)</label>
+                    <input class="form-control" type="file" name="document_file" id="document_file" accept=".pdf" required>
+                    <div class="invalid-feedback">
+                        يجب إدخال ملف المكاتبة
+                       </div>
+                  </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="document_attachments" class="form-label">مرفقات المكاتبة</label>
+                    <input class="form-control" type="file" name="document_attachments" id="document_attachments" accept="image/jpeg, image/png, image/jpg" multiple>
+                  </div>
+            </div>
+           </div>
+          </form>
+         </div>
+        </div>
+        <!-- end card -->
+       </div>
+    <!-- end col -->
+   </div>
+   <div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">
+                 توزيع المكاتبة
+                </h4>
+                <div class="table-responsive">
+                 <table class="table table-striped mb-0" id="distribute-table">
+                  <thead>
+                   <tr>
+                    <th class="fw-bold">
+                     الفرع / الإتجاه
+                    </th>
+                    <th class="fw-bold">
+                     أساسي
+                    </th>
+                    <th class="fw-bold">
+                     معلومية
+                    </th>
+                    <th class="fw-bold">
+                    التكليف
+                    </th>
+                   </tr>
+                  </thead>
+                  <tbody>
+                    {% for unit in units %}
+                    <tr id = "{{unit.id}}">
+                        <td>
+                            {{unit.unit_name}}
+                        </td>
+                        <td><input type="radio" name="main_unit"></td>
+                        <td><input type="checkbox" name="sub_unit"></td>
+                        <td><button class="btn btn-primary btn-sm btn-rounded waves-effect waves-light fw-bold assignment-button" type="button"
+                            data-bs-target=".add_assignment_modal"
+                                type="button" data-bs-toggle="modal">
+                            إضافة تكليف
+                           </button></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                 </table>
+                </div>
+               </div>
+        </div>
+        <!-- end card -->
+       </div>
+    <!-- end col -->
+   </div>
+   <div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <button class="btn btn-primary float-end" id = "save_incoming_doc">
+                    حفظ وتوزيع المكاتبة
+                   </button>
+            </div>
+        </div>
+     </div>
+   </div>
+   <div aria-labelledby="myLargeModalLabel" class="modal fade add_assignment_modal" style="display: none;"
+    aria-hidden="true" id="LargeModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myLargeModalLabel">
+                    إضافة تكليف منفصل
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addAssignmentForm">
+                    <input type="hidden" id="unitIdInput" name="unit_id">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            نص التكليف:
+                        </label>
+                        <textarea class="form-control" name="assignment_description" id="" cols="4" rows="2">برجاء إتخاذ اللازم</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">
+                            تاريخ انتهاء التكليف
+                        </label>
+                        <div class="input-group" id="assignment_deadline">
+                            <input class="form-control" data-date-container="#assignment_deadline" name = "assignment_deadline" data-date-format="yyyy/mm/dd" data-provide="datepicker" value = '{{current_date}}' type="text"/>
+                            <span class="input-group-text">
+                             <i class="mdi mdi-calendar">
+                             </i>
+                            </span>
+                           </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light waves-effect" data-bs-dismiss="modal" type="button">
+                    إلغاء
+                </button>
+                <button class="btn btn-primary waves-effect waves-light" type="button" id ="save-assignment">
+                    حفظ
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script>
+    var addIncomingDocURL = "{% url 'documents:add_incoming_doc' %}";
+</script>
+<script src="{% static 'js/pages/add_incoming_doc.js' %}"></script>
+{% endblock %}

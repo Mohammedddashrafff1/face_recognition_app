@@ -1,0 +1,45 @@
+
+
+{% extends 'base.html' %} 
+
+{% block content %}
+<body>
+  <h1>بث تعريف الوجوه</h1>
+
+  {% comment %} <h1>Face Recognition</h1> {% endcomment %}
+  <img src="{% url 'website:video_feed' %}">
+
+  <div id="latestVisitsTable"></div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+  <script>
+    $(document).ready(function(){
+      setInterval(function(){
+        $.ajax({
+          type: 'GET',
+          url: "{% url 'website:latest_attendance' %}",  // Updated URL
+          success: function(response){
+            // Update the table with the received data
+            updateTable(response.latest_attendance);  // Updated field name
+          },
+          error: function(response){
+            alert("No Data");
+          }
+        });
+      }, 1000);
+
+      function updateTable(attendance){
+        var tableHTML = '<table class="table"><thead><tr><th>الأسم</th><th>  توقيت الدخول</th></tr></thead><tbody>';
+        attendance.forEach(function(entry){
+          tableHTML += '<tr><td>' + entry.user_name + '</td><td>' + entry.time + '</td></tr>';  // Updated field names
+        });
+        tableHTML += '</tbody></table>';
+        $('#latestVisitsTable').html(tableHTML);
+      }
+    });
+</script>
+
+</body>
+{% endblock content %}

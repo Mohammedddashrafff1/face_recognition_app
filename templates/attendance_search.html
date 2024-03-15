@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content%}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title mt-2 mb-3 text-center" style="font-size: 45px;font-weight: 600;">
+                    البحث   
+                </h4>
+                <form method="GET">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                            <label class="form-label">
+                                اسم العامل 
+                            </label>
+                            <select class="form-select select2" name="person">
+                                <option value="">
+                                    لا يوجد
+                                </option>
+                                {% for person in persons %}
+                                    <option value="{{person.id}}" {% if person.id == selected_person %}selected{% endif %}>
+                                        {{person.system_user_name}}
+                                    </option> 
+                                {% endfor %} 
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">
+                            من تاريخ  
+                        </label>
+                        <div class="input-group" id="date_from">
+                            <input class="form-control" data-date-container="#_date_from" type="text" name="_date_from" data-date-format="yyyy/mm/dd" data-provide="datepicker" placeholder="  من تاريخ ">
+                            <span class="input-group-text">
+                             <i class="mdi mdi-calendar">
+                             </i>
+                            </span>
+                           </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">
+                            إلى تاريخ  
+                        </label>
+                        <div class="input-group" id="date_to">
+                            <input class="form-control" data-date-container="#date_to" type="text" name="date_to" data-date-format="yyyy/mm/dd" data-provide="datepicker" placeholder="  إلى تاريخ " >
+                            <span class="input-group-text">
+                             <i class="mdi mdi-calendar">
+                             </i>
+                            </span>
+                           </div>
+                    </div>
+                </div>
+ 
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">بحث </button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+      
+            <h4 class="card-title mt-4 mb-3 text-center" style="font-size: 45px;font-weight: 600;">
+                نتائج البحث   
+            </h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>اسم العامل</th>
+                        <th>التاريخ</th>
+                        <th>وقت الدخول</th>
+                        <th>وقت الخروج</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attendance in attendance_results %}
+                        <tr>
+                            <td>{{ attendance.person.system_user_name }}</td>
+                            <td>{{ attendance.date }}</td>
+                            <td>{{ attendance.entry_time }}</td>
+                            <td>{{ attendance.exit_time }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+
+<!-- end card -->
+</div>
+</div>
+</div>
+</div>  
+{% endblock content %}

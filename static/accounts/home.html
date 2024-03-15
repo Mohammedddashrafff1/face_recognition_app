@@ -1,0 +1,132 @@
+{% extends 'base.html' %} {% block content %}
+<!-- start page title -->
+<div class="row">
+  <div class="col-12">
+    <div
+      class="page-title-box d-flex align-items-center justify-content-between"
+    >
+      <h4 class="mb-0">الهيكل التنظيمي</h4>
+      <div class="page-title-right">
+        <ol class="breadcrumb m-0">
+          <li class="breadcrumb-item">
+            <a href="javascript: void(0);"> الوحدة </a>
+          </li>
+          <li class="breadcrumb-item active">الهيكل التنظيمي</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end page title -->
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="example"></div>
+
+        <hr />
+        <button
+          id="save-unit-structure"
+          aria-pressed="false"
+          class="btn btn-primary waves-effect waves-light float-end"
+          data-toggle="button"
+          type="button"
+        >
+          حفظ الهيكل التنظيمي للوحدة
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end row -->
+
+{% endblock content %} {% block javascript %}
+<script>
+  // var user_unit = "{{ user_unit }}";
+  // var data = [
+  //   {
+  //     title: 'هيئة الاستخبارات العسكرية',
+  //     children: [
+  //       {
+  //         title: "مستشار المدير للتخطيط والتدريب",
+  //         children: [
+  //           {
+  //             title: "فرع نظم المعلومات",
+  //             children: [
+  //               {
+  //                 title: "قسم الحاسب",
+  //               },
+  //             ],
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   },
+  // ];
+  data = {{ unit_data|safe }}
+  const myTree = new DinampTreeEditor(".example").setData(data);
+
+  $("#save-unit-structure").click(function () {
+    Swal.fire({
+      title: "حفظ الهيكل التنظيمي",
+      text: "هل تريد حفظ الهيكل التنظيمي الحالي لوحدتك؟",
+      icon: "warning",
+      showCancelButton: !0,
+      confirmButtonColor: "#34c38f",
+      cancelButtonColor: "#f46a6a",
+      confirmButtonText: "حفظ",
+      cancelButtonText: "إلغاء",
+    }).then(function (t) {
+      if (t.value) {
+        const tree_data = myTree.getData();
+        Swal.fire("تم الحفظ", "تم حفظ هيكل وحدتك التنظيمي", "success");
+        $.ajax({
+          method: "POST",
+          url: window.location.href,
+          data: JSON.stringify(tree_data), // Use the FormData object directly
+          success: function (data) {},
+          error: function (error_data) {
+            toastr["error"](error_data.responseText, "خطأ!");
+          },
+        });
+      }
+    });
+  });
+
+
+// Function to traverse the tree structure
+function processItemParentAndChildGroup(itemParentElement, childGroupElement) {
+    const itemParentText = itemParentElement.find('p').text();
+    const childGroupText = childGroupElement.find('p').text();
+
+    const result = {
+        main_unit: itemParentText,
+        children: []
+    };
+
+    // Recursively process childGroup if it exists
+    if (childGroupElement.length > 0) {
+        const children = childGroupElement.find('.itemParent');
+        children.each(function () {
+            const childResult = processItemParentAndChildGroup($(this), $(this).next('.childGroup'));
+            result.children.push(childResult);
+        });
+    }
+
+    return result;
+}
+
+// Function to traverse the tree structure and return as JSON
+function traverseTree(element) {
+    const mainUnit = element.find('.itemParent');
+    const childGroup = element.find('.childGroup');
+
+    // Process mainUnit and childGroup
+    const result = processItemParentAndChildGroup(mainUnit, childGroup);
+
+    return result;
+}
+
+</script>
+
+{% endblock javascript %}

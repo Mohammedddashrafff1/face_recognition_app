@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content%}
+<div class="row">
+  <div class="col-12">
+    <div
+      class="page-title-box d-flex align-items-center justify-content-between"
+    >
+      <h4 class="mb-0">إضافة مستخدم</h4>
+      <div class="page-title-right">
+        <ol class="breadcrumb m-0">
+          <li class="breadcrumb-item">
+            <a href="{% url 'website:index' %}"> الرئيسية </a>
+          </li>
+
+          <li class="breadcrumb-item active">إضافة مستخدم</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST" id="add_face" class="needs-validation" novalidate enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label"> اسم العامل </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  required
+                  maxlength="30"
+                  name="username"
+                />
+                <div class="invalid-feedback">برجاء إدخال قيمة.</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-md-4">
+            <div class="mb-3">
+                <label for="document_file" class="form-label"> صورة وجه العامل</label>
+                <input class="form-control" type="file" name="document_file" id="document_file" accept=".png, .jpg, .jpeg, .JPG" required>
+                <div class="invalid-feedback">
+                    يجب إدخال  صورة وجه العامل
+                   </div>
+              </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button  class="btn btn-lg btn-primary btn-block" type="submit">اضافة العامل</button>
+              </button>
+            </div>
+          </div>
+
+
+        </form>
+  
+      </div>
+      <!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+</div>
+{% endblock content %}
+{% block javascript %}
+  <script src="{% static 'js/pages/add_user.js' %}"></script>
+{% endblock %}
+
+

@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load myTags %}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-0">
+                قائمة المواضيع
+            </h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'accounts:home' %}">
+                            الرئيسية
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        قائمة المواضيع
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <a class="btn btn-success waves-effect waves-light" data-bs-target=".add_subject_modal"
+                                type="button" data-bs-toggle="modal">
+                                <i class="mdi mdi-plus">
+                                </i>
+                                إضافة
+                            </a>
+                        </div>
+                    </div>
+                    {% csrf_token %}
+                    <div class="col-md-6">
+                        <div class="form-inline float-md-end mb-3">
+                            <form method="GET" novalidate>
+                                <div class="search-box ms-2">
+                                    <div class="position-relative">
+                                        <input class="form-control rounded bg-light border-0" placeholder="بحث ..."
+                                            type="text" value="{{request.GET.search}}" name="search">
+                                        <i class="mdi mdi-magnify search-icon">
+                                        </i>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive mb-4">
+                    <table class="table table-centered table-nowrap mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    رقم الملف
+                                </th>
+                                <th scope="col">
+                                    اسم الملف
+                                </th>
+                                <th scope="col">
+                                    رقم القيد
+                                </th>
+                                <th scope="col">
+                                    العمليات
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="subjects_list">
+                            {% for subject in subjects %}
+                            <tr id="{{subject.id}}">
+                                <td>
+                                    {{subject.id|convert_to_arabic_numerals}}
+                                </td>
+                                <td>
+                                    {{subject.subject_name|convert_to_arabic_numerals}}
+                                </td>
+                                <td>
+                                    {{subject.subject_num|convert_to_arabic_numerals}}
+                                </td>
+                                <td>
+                                    <ul class="list-inline mb-0">
+                                        <li class="list-inline-item">
+                                            <a class="text-primary"
+                                                href="javascript:edit_subject_popup({{subject.id}})">
+                                                <i class="uil uil-pen font-size-18">
+                                                </i>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a class="text-danger" href="javascript:delete_item({{subject.id}})">
+                                                <i class="uil uil-trash-alt font-size-18">
+                                                </i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-sm-6">
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="float-sm-end">
+                            <ul class="pagination pagination-rounded justify-content-center mt-4">
+                                <li class="page-item {% if current_page|into_int == 1|into_int %}disabled{% endif %}">
+                                    <a class="page-link"
+                                        href="{% if '?search' in  request.get_full_path%}?search={{request.GET.search}}&page={{current_page|sub:1}}{% else %}?page={{current_page|sub:1}}{% endif %}">
+                                        <i class="mdi mdi-chevron-right">
+                                        </i>
+                                    </a>
+                                </li>
+                                {% for x in current_page|my_pages:pages %}
+                                <li class="page-item {% if  x|into_str == current_page|into_str %}active{% endif %}">
+                                    <a class="page-link"
+                                        href="{% if '?search' in  request.get_full_path%}?search={{request.GET.search}}&page={{x}}{% else %}?page={{x}}{% endif %}">
+                                        {{x}}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                                <li class="page-item {% if current_page|add:1 > pages|into_int %}disabled{% endif %}">
+                                    <a class="page-link"
+                                        href="{% if '?search' in  request.get_full_path%}?search={{request.GET.search}}&page={{current_page|add:1}}{% else %}?page={{current_page|add:1}}{% endif %}">
+                                        <i class="mdi mdi-chevron-left">
+                                        </i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<! ------------------------- Start Add Modal ----------------------------- ->
+<div aria-labelledby="myLargeModalLabel" class="modal fade add_subject_modal" style="display: none;"
+    aria-hidden="true" id="LargeModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myLargeModalLabel">
+                    إضافة موضوع جديد
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="add_subject" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    <input type="hidden" name="type" value="add" />
+                    <div class="mb-3">
+                        <label class="form-label">
+                            اسم الملف
+                        </label>
+                        <input class="form-control" type="text" required maxlength="100" name="subject_name">
+                        <div class="invalid-feedback">
+                            برجاء إدخال اسم الملف.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">
+                            رقم القيد
+                        </label>
+                        <input class="form-control" type="number" required min="0" name="subject_num">
+                        <div class="invalid-feedback">
+                            برجاء إدخال رقم القيد
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light waves-effect" data-bs-dismiss="modal" type="button">
+                    إلغاء
+                </button>
+                <button class="btn btn-primary waves-effect waves-light" type="submit" form="add_subject">
+                    حفظ
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<! ------------------------- Start Edit Modal ----------------------------- ->
+<div aria-labelledby="myLargeModalLabel" class="modal fade edit_subject_modal" style="display: none;"
+    aria-hidden="true" id="EditLargeModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myLargeModalLabel">
+                    تعديل تصنيف لمصدر المعلومة
+                </h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="edit_subject" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    <input type="hidden" name="type" value="edit" />
+                    <input type="hidden" name="edit_subject_id" />
+                    <div class="mb-3">
+                        <label class="form-label">
+                            اسم الملف
+                        </label>
+                        <input class="form-control" type="text" required maxlength="100" name="edit_subject_name">
+                        <div class="invalid-feedback">
+                            برجاء إدخال اسم الملف.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">
+                            رقم القيد
+                        </label>
+                        <input class="form-control" type="number" required min="0" name="edit_subject_num" disabled>
+                        <div class="invalid-feedback">
+                            برجاء إدخال رقم القيد
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light waves-effect" data-bs-dismiss="modal" type="button">
+                    إلغاء
+                </button>
+                <button class="btn btn-primary waves-effect waves-light" type="submit" form="edit_subject">
+                    حفظ
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block javascript %}
+<script src="{% static 'js/pages/unit_subjects.js' %}"></script>
+{% endblock javascript %}

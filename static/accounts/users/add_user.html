@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load myTags %}
+{% load static %}
+{% block content%}
+<div class="row">
+  <div class="col-12">
+    <div
+      class="page-title-box d-flex align-items-center justify-content-between"
+    >
+      <h4 class="mb-0">إضافة مستخدم</h4>
+      <div class="page-title-right">
+        <ol class="breadcrumb m-0">
+          <li class="breadcrumb-item">
+            <a href="{% url 'accounts:home' %}"> الرئيسية </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'accounts:users' %}"> قائمة المستخدمين </a>
+          </li>
+          <li class="breadcrumb-item active">إضافة مستخدم</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST" id="add_user" class="needs-validation" novalidate>
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label"> اسم المستخدم </label>
+                <input
+                  class="form-control"
+                  type="text"
+                  required
+                  maxlength="30"
+                  name="username"
+                />
+                <div class="invalid-feedback">برجاء إدخال قيمة.</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label">كلمة المرور</label>
+                <input
+                  class="form-control"
+                  type="password"
+                  required
+                  max="999999999999999999999999999999"
+                  name="password"
+                />
+                <div class="invalid-feedback">برجاء إدخال قيمة.</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label">تأكيد كلمة المرور</label>
+                  <input
+                    class="form-control"
+                    type="password"
+                    required
+                    max="999999999999999999999999999999"
+                    name="confirm_password"
+                  />
+                  <div class="invalid-feedback">برجاء إدخال قيمة.</div>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label"> الدرجة/الرتبة</label>
+                <select class = 'form-select select2' name="rank" id="rank">
+                    {% for rank in ranks %}
+                    <option value="{{ rank.id }}">
+                        {{ rank_name }}
+                    </option>
+                    {% endfor %}
+                  </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label"> اسم الفرد </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    required
+                    maxlength="50"
+                    name="system_user_name"
+                  />
+                  <div class="invalid-feedback">برجاء إدخال قيمة.</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label"> المستوى الأعلى </label>
+                  <select class = 'form-select select2' name="parent" id="parent">
+                    {% for parent in parents %}
+                    <option value="{{ parent.id }}">
+                        {{ parent.rank.rank_name }} / {{ parent.system_user_name }}
+                    </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label">الرقم العسكري</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  name="mil_num"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label">رقم الأقدمية</label>
+                <input
+                  class="form-control"
+                  type="password"
+                  required
+                  max="999999999999999999999999999999"
+                  name="password"
+                />
+                <div class="invalid-feedback">برجاء إدخال قيمة.</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label">رقم التليفون</label>
+                  <input
+                    class="form-control"
+                    type="password"
+                    required
+                    max="999999999999999999999999999999"
+                    name="confirm_password"
+                  />
+                  <div class="invalid-feedback">برجاء إدخال قيمة.</div>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+                <div class="mb-3">
+                    <label class="form-label">وصف المستخدم</label>
+                    <textarea class="form-control" name="" id="" cols="2" rows="2"></textarea>
+                    <div class="invalid-feedback">برجاء إدخال قيمة.</div>
+            </div>
+          </div>
+        </form>
+        <div class="row">
+          <div class="col-12">
+            <button class="btn btn-primary float-end" id="save_incoming_doc">
+              حفظ المستخدم
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- end card -->
+    </div>
+    <!-- end col -->
+  </div>
+</div>
+{% endblock content %}
+
